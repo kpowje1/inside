@@ -38,35 +38,35 @@ def generate_test_users():
         db.session.add(Customers(name=i, password=users.setdefault(i)))
     db.session.commit()
     db.session.close()
-    get_data = Customers.query.filter_by(name='Andrey').first()
-    json_response = {'test': {'name': get_data.name, 'password': get_data.password}, }
-    return json.dumps(json_response, indent=2), 201, {'Content-Type': 'application/json'}
+    json_response = {"Данные из БД для примера": users, }
+    return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type': 'application/json'}
 
 
 # Проверка по БД пароля и имя, исходя из задания считаю что имя уникальное
 @app.route('/gettoken', methods=['POST'])
 def get_token():
     if request.method == 'POST':
-        print(request.data)
         # на случай если будут отправлены данные не по регламенту
         try:
             username, password = request.json.get('username'), request.json.get('password')
+            print('ne 54')
             db_data = Customers.query.filter_by(name=username).first()
+            print('ne 56')
             if password == db_data.password:
                 access_token = create_access_token(identity=db_data.name)
                 json_response = {'token': access_token, }
                 db.session.close()
-                return json.dumps(json_response, indent=2), 201, {'Content-Type': 'application/json'}
+                return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type': 'application/json'}
             else:
-                a = 'net taokgo user|pass'
+                a = 'имя и пароль не совпадают'
         except:
-            json_response = {'server_status': 201, 'description': 'Данные были указаны не верно', }
-            return json.dumps(json_response, indent=2), 201, {'Content-Type': 'application/json'}
+            json_response = {'server_status': 201, 'description': 'Некорректно указаны данные ', }
+            return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type': 'application/json'}
 
         return 'success' + a, 200, {'Content-Type': 'applicaton/json'}
     else:
         json_response = {'server_status': 201, 'description': 'pls send post request', }
-        return json.dumps(json_response, indent=2), 201, {'Content-Type': 'application/json'}
+        return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type': 'application/json'}
 
 
 # Проверка подлинности токена
@@ -90,13 +90,13 @@ def protected():
             count_loop += 1
         json_response = message_dict
         db.session.close()
-        return json.dumps(json_response, indent=2), 200, {'Content-Type': 'application/json'}
+        return json.dumps(json_response, indent=2, ensure_ascii=False), 200, {'Content-Type': 'application/json'}
     else:
         db.session.add(Messages(customers_id=user_data.id, message=message))
         db.session.commit()
         db.session.close()
-    json_response = {'logged_in_as': current_user}
-    return json.dumps(json_response, indent=2), 200, {'Content-Type': 'application/json'}
+    json_response = {'logged_in_as': current_user, 'add_message': message, }
+    return json.dumps(json_response, indent=2, ensure_ascii=False), 200, {'Content-Type': 'application/json'}
 
 
 if __name__ == '__main__':

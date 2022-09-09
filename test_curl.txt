@@ -1,0 +1,9 @@
+curl -i http://localhost:5000/generate -X GET
+
+curl -i http://localhost:5000/gettoken -X POST -d '{"username":"Masha", "password":"pwd2"}' -H "Content-Type: application/json"
+
+curl -i http://localhost:5000/protected -X POST -d '{"name":"Masha", "message":"any message #1"}' -H "Content-Type: application/json" -H "Authorization:Bearer token"
+
+curl -i http://localhost:5000/protected -X POST -d '{"name":"Masha", "message":"any message #2"}' -H "Content-Type: application/json" -H "Authorization:Bearer token"
+
+curl -i http://localhost:5000/protected -X POST -d '{"name":"Masha", "message":"history 8"}' -H "Content-Type: application/json" -H "Authorization:Bearer token"

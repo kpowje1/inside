@@ -14,12 +14,10 @@ services:
      - "5432:5432"
     
  app:
-  build: ./app
+  image: kpowje/inside24
   restart: always
   ports:
    - 5000:5000
-#  volumes:
- #  - .:/app
   depends_on:
    - postgres
   entrypoint: ["python", "main.py", "runserver"]

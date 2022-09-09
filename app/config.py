@@ -1,4 +1,3 @@
-#host = 'localhost'
 host = 'postgres'
 user = 'inside'
 password = 'password'
