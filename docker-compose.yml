@@ -1,0 +1,25 @@
+version: '2.1'
+services:
+ postgres:
+   image: postgres
+   restart: always
+   environment:
+     - POSTGRES_USER=inside
+     - POSTGRES_PASSWORD=password
+     - POSTGRES_DB=inside
+     - POSTGRES_HOST=localhost
+   volumes:
+     - ./postgres-data/postgres:/var/lib/postgresql/data
+   ports:
+     - "5432:5432"
+    
+ app:
+  build: ./app
+  restart: always
+  ports:
+   - 5000:5000
+#  volumes:
+ #  - .:/app
+  depends_on:
+   - postgres
+  entrypoint: ["python", "main.py", "runserver"]
