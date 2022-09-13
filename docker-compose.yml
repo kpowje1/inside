@@ -17,7 +17,7 @@ services:
   image: kpowje/inside24
   restart: always
   ports:
-   - 5000:5000
+   - "5000:5000"
   depends_on:
    - postgres
   entrypoint: ["python", "main.py", "runserver"]
